@@ -29,25 +29,31 @@ This project emphasizes clean architecture, resilience, and testability, making 
 
 ## Architecture
 
-The system is designed with clear separation of concerns, following a layered architecture to ensure modularity and maintainability.
+The system is designed with a clear separation of concerns, following a layered architecture to ensure modularity and maintainability.
 
 ```mermaid
 flowchart TD
     A[Telegram User] --> B[Telegram Bot API]
     B --> C[Long Polling]
     C --> D[Ingestion Service]
+
     D --> E{Content Type Router}
+
     E -->|Plain Text| F[Text Extractor]
-    E -->|URL| G[URL Extractor (Trafilatura)]
-    E -->|PDF| H[PDF Extractor (MarkItDown/pdftotext)]
+    E -->|URL| G[URL Extractor - Trafilatura]
+    E -->|PDF| H[PDF Extractor - MarkItDown / pdftotext]
+
     F --> I[LLM Orchestrator]
     G --> I
     H --> I
-    J[SQLite Style Memory] --> I
+
+    J[(SQLite Style Memory)] --> I
+
     I --> K[Ollama / LLM]
     K --> L[JSON Validator]
     L --> M[Idempotency Layer]
     M --> N[Google Sheets]
+
     I --> O[Telegram Response]
 ```
 
